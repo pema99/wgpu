@@ -306,7 +306,7 @@ pub trait Context: Debug + Send + Sized + Sync {
         buffer: &Self::BufferId,
         buffer_data: &Self::BufferData,
         sub_range: Range<BufferAddress>,
-    ) -> Box<dyn BufferMappedRange>;
+    ) -> Box<dyn BufferMappedRange + Send + Sync>;
     fn buffer_unmap(&self, buffer: &Self::BufferId, buffer_data: &Self::BufferData);
     fn texture_create_view(
         &self,
@@ -1273,7 +1273,7 @@ pub(crate) trait DynContext: Debug + Send + Sync {
         buffer: &ObjectId,
         buffer_data: &crate::Data,
         sub_range: Range<BufferAddress>,
-    ) -> Box<dyn BufferMappedRange>;
+    ) -> Box<dyn BufferMappedRange + Send + Sync>;
     fn buffer_unmap(&self, buffer: &ObjectId, buffer_data: &crate::Data);
     fn texture_create_view(
         &self,
@@ -2346,7 +2346,7 @@ where
         buffer: &ObjectId,
         buffer_data: &crate::Data,
         sub_range: Range<BufferAddress>,
-    ) -> Box<dyn BufferMappedRange> {
+    ) -> Box<dyn BufferMappedRange + Send + Sync> {
         let buffer = <T::BufferId>::from(*buffer);
         let buffer_data = downcast_ref(buffer_data);
         Context::buffer_get_mapped_range(self, &buffer, buffer_data, sub_range)

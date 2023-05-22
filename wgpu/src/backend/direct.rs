@@ -1497,7 +1497,7 @@ impl crate::Context for Context {
         buffer: &Self::BufferId,
         _buffer_data: &Self::BufferData,
         sub_range: Range<wgt::BufferAddress>,
-    ) -> Box<dyn crate::context::BufferMappedRange> {
+    ) -> Box<dyn crate::context::BufferMappedRange + Send + Sync> {
         let size = sub_range.end - sub_range.start;
         let global = &self.0;
         match wgc::gfx_select!(buffer => global.buffer_get_mapped_range(

@@ -86,7 +86,7 @@ pub fn make_spirv_raw(data: &[u8]) -> Cow<[u32]> {
 /// CPU accessible buffer used to download data back from the GPU.
 pub struct DownloadBuffer(
     Arc<super::Buffer>,
-    Box<dyn crate::context::BufferMappedRange>,
+    Box<dyn crate::context::BufferMappedRange + Send + Sync>,
 );
 
 impl DownloadBuffer {
